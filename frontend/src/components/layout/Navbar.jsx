@@ -30,7 +30,7 @@ function Navbar() {
                         </Link>
                         <div className="hidden lg:flex items-center gap-8">
                             <NavLink to="/">خانه</NavLink>
-                            <NavLink to="/shop">فروشگاه</NavLink>
+                            <NavLink to="shop" className={({isActive}) => isActive && "text-(--primary-hover)"}>فروشگاه</NavLink>
                             <NavLink to="/categories">دسته بندی ها</NavLink>
                             <NavLink to="/blog">وبلاگ</NavLink>
                             <NavLink to="/contact">تماس با ما</NavLink>

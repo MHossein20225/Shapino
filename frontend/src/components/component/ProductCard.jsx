@@ -1,9 +1,12 @@
 function ProductCard({image, name, price, off = null, rating}) {
     return(
         <div className="relative flex flex-col bg-(--bg-secondary) rounded-(--radius-sm) overflow-hidden shadow-sm hover:shadow-md transition w-full">
-            <div className="absolute top-2 right-2 bg-red-500 text-white text-[10px] sm:text-xs px-2 py-1 rounded-md z-10">
-                OFF {off}%
-            </div>
+            {off &&
+                <div className="absolute top-2 right-2 bg-red-500 text-white text-[10px] sm:text-xs px-2 py-1 rounded-md z-10">
+                    OFF {off}%
+                </div>
+            }
+
             <div className="w-full aspect-square p-2">
                 <img
                     className="w-full h-full object-cover rounded-(--radius-sm)"
@@ -21,7 +24,7 @@ function ProductCard({image, name, price, off = null, rating}) {
                             {price}
                         </p>
                         {off && <p className="text-sm sm:text-base text-red-500 font-bold">
-                            price - (price * off / 100)
+                            {price - (price * off / 100)}
                         </p>}
                     </div>
                     <p className="text-[10px] sm:text-xs text-gray-500">تومان</p>

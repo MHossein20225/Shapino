@@ -93,7 +93,23 @@ function Home() {
             <section className="w-full mt-6">
                 <div className="flex flex-col gap-9 max-w-7xl mx-auto px-4 bg-(--bg-secondary) w-full rounded-(--radius-md) py-6">
                     <div className="flex justify-between items-center">
-                        <p className="text-xl font-bold">محصولات</p>
+                        <p className="text-xl font-bold">لپ تاپ</p>
+                        <Link to="" className="text-blue-500 hover:underline">
+                            مشاهده همه
+                        </Link>
+                    </div>
+
+                    <div className="w-full">
+                        <Swiper slidesPerView={width <= 720 ? 3 : 5} spaceBetween={20}>
+                            <SwiperSlide>{/*where we get product*/}</SwiperSlide>
+                        </Swiper>
+                    </div>
+                </div>
+            </section>
+            <section className="w-full mt-6">
+                <div className="flex flex-col gap-9 max-w-7xl mx-auto px-4 bg-(--bg-secondary) w-full rounded-(--radius-md) py-6">
+                    <div className="flex justify-between items-center">
+                        <p className="text-xl font-bold">لباس مردانه</p>
                         <Link to="" className="text-blue-500 hover:underline">
                             مشاهده همه
                         </Link>

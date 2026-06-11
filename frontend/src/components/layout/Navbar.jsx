@@ -31,9 +31,9 @@ function Navbar() {
                         <div className="hidden lg:flex items-center gap-8">
                             <NavLink to="/">خانه</NavLink>
                             <NavLink to="shop" className={({isActive}) => isActive && "text-(--primary-hover)"}>فروشگاه</NavLink>
-                            <NavLink to="/categories">دسته بندی ها</NavLink>
+                            <NavLink to="/categories" className="text-nowrap">دسته بندی ها</NavLink>
                             <NavLink to="/blog">وبلاگ</NavLink>
-                            <NavLink to="/contact">تماس با ما</NavLink>
+                            <NavLink to="/contact" className="text-nowrap">تماس با ما</NavLink>
                         </div>
                         <div
                             className="hidden lg:flex items-center bg-(--bg-secondary) border rounded-(--radius-md) overflow-hidden">

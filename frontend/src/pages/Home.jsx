@@ -101,7 +101,7 @@ function Home() {
 
                     <div className="w-full">
                         <Swiper slidesPerView={width <= 720 ? 3 : 5} spaceBetween={20}>
-                            <SwiperSlide>{/*where we get product*/}</SwiperSlide>
+                            <SwiperSlide><ProductCard /></SwiperSlide>
                         </Swiper>
                     </div>
                 </div>
@@ -114,7 +114,6 @@ function Home() {
                             مشاهده همه
                         </Link>
                     </div>
-
                     <div className="w-full">
                         <Swiper slidesPerView={width <= 720 ? 3 : 5} spaceBetween={20}>
                             <SwiperSlide>{/*where we get product*/}</SwiperSlide>

@@ -1,6 +1,6 @@
 import '../../index.css'
 import {useState} from 'react'
-import {Link, NavLink} from 'react-router-dom'
+import {Link, NavLink, useLoaderData} from 'react-router-dom'
 import logo from '../../assets/icons/bag.svg'
 import search from '../../assets/icons/serach.svg'
 import cart from '../../assets/icons/cart.svg'
@@ -10,6 +10,8 @@ import lArrow from '../../assets/icons/leftArrow.svg'
 
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
+    const isAuth = useLoaderData()
+
     return (
         <>
             <nav className="w-full bg-(--bg-secondary)">
@@ -30,7 +32,8 @@ function Navbar() {
                         </Link>
                         <div className="hidden lg:flex items-center gap-8">
                             <NavLink to="/">خانه</NavLink>
-                            <NavLink to="shop" className={({isActive}) => isActive && "text-(--primary-hover)"}>فروشگاه</NavLink>
+                            <NavLink to="shop"
+                                     className={({isActive}) => isActive && "text-(--primary-hover)"}>فروشگاه</NavLink>
                             <NavLink to="/categories" className="text-nowrap">دسته بندی ها</NavLink>
                             <NavLink to="/blog">وبلاگ</NavLink>
                             <NavLink to="/contact" className="text-nowrap">تماس با ما</NavLink>
@@ -66,19 +69,22 @@ function Navbar() {
                                 </span>
                             </Link>
 
-                            <Link
-                                to="/login"
-                                className="hidden md:flex items-center gap-1"
-                            >
-                                <img
-                                    className="size-8 md:size-10"
-                                    src={user}
-                                    alt="user"
-                                />
-                                <span>
+
+                            {!isAuth &&
+                                <Link
+                                    to="/login"
+                                    className="hidden md:flex items-center gap-1"
+                                >
+                                    <img
+                                        className="size-8 md:size-10"
+                                        src={user}
+                                        alt="user"
+                                    />
+                                    <span>
                                     ورود
                                 </span>
-                            </Link>
+                                </Link>}
+
                             <button
                                 onClick={() => setIsOpen(true)}
                                 className="lg:hidden text-3xl"

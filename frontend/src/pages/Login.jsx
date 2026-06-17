@@ -1,12 +1,12 @@
 import search from "../assets/icons/serach.svg";
 import lock from "../assets/icons/lock.svg";
-import {Link} from "react-router-dom";
+import {Form, Link, redirect, useActionData} from "react-router-dom";
 
 function Login(){
-
+    const response = useActionData()
     return (
         <nav className="w-full bg-(--bg-secondary)">
-            <div className="max-w-md mx-auto px-4 py-16 md:py-24 flex flex-col items-center gap-8">
+            <Form method="post" className="max-w-md mx-auto px-4 py-16 md:py-24 flex flex-col items-center gap-8">
                 <div className="text-center">
                     <h1 className="text-3xl md:text-4xl font-bold mb-2">
                         ورود به حساب کاربری
@@ -29,7 +29,8 @@ function Login(){
                         </div>
                         <input
                             id="email"
-                            type="email"
+                            type="text"
+                            name="email"
                             placeholder="ایمیل خود را وارد کنید"
                             className="w-full h-12 px-2 bg-transparent outline-none"
                         />
@@ -50,6 +51,7 @@ function Login(){
                         <input
                             id="password"
                             type="password"
+                            name="password"
                             placeholder="رمز عبور را وارد کنید"
                             className="w-full h-12 px-2 bg-transparent outline-none"
                         />
@@ -71,9 +73,29 @@ function Login(){
                 >
                     ورود
                 </button>
-            </div>
+            </Form>
+            {response?.message}
         </nav>
     )
 }
 
 export default Login;
+export async function action({ request }) {
+    const formData = await request.formData();
+    const data = {
+        email: formData.get("email"),
+        password: formData.get("password")
+    };
+    const response = await fetch("http://localhost:8000/api/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+    const result = await response.json()
+    if (!response.ok) return result;
+    localStorage.setItem('token', result.token)
+    return redirect('/')
+}

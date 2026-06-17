@@ -1,6 +1,10 @@
+import {useDispatch, useSelector} from "react-redux";
+import {addToCart} from "../features/cart/cartSlice.jsx";
 
-function Cart() {
-
+function Cart(){
+    const dispatch = useDispatch()
+    const stateCart = useSelector(state => state.cart)
+    console.log(stateCart)
     return (
         <>
             <header className="w-full">

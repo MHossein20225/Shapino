@@ -1,16 +1,16 @@
 import {createBrowserRouter} from "react-router-dom";
 import Home from "../pages/Home.jsx";
-import MainLayout from "../layouts/MainLayout.jsx";
+import MainLayout, {loader as MainLayoutLoader} from "../layouts/MainLayout.jsx";
 import Products from "../pages/Products.jsx";
-import Login from "../pages/Login.jsx";
+import Login, {action as loginAction} from "../pages/Login.jsx";
 import AuthLayout from "../layouts/AuthLayout.jsx";
-import Register from "../pages/Register.jsx";
+import Register, {action as registerAction} from "../pages/Register.jsx";
 import Cart from "../pages/Cart.jsx";
 import ProductDetails from "../pages/ProductDetails.jsx";
 
 const routes = createBrowserRouter([
     {
-        path: '/', element: <MainLayout/>, children: [
+        path: '/', element: <MainLayout/>, loader: MainLayoutLoader, children: [
             {index: true, element: <Home/>},
             {path: 'shop', element: <Products/>},
             {path: 'cart', element: <Cart/>},
@@ -19,8 +19,8 @@ const routes = createBrowserRouter([
     },
     {
         element: <AuthLayout/>, children: [
-            {path: '/login', element: <Login/>},
-            {path: '/register', element: <Register/>}
+            {path: '/login', element: <Login/>, action: loginAction},
+            {path: '/register', element: <Register/>, action: registerAction}
         ]
     }
 ])

@@ -1,9 +1,12 @@
 import search from "../assets/icons/serach.svg";
 import lock from "../assets/icons/lock.svg";
 import user from "../assets/icons/user.svg";
-import {Form, Link, redirect, useActionData} from "react-router-dom";
+import {Await, Form, Link, redirect, useActionData} from "react-router-dom";
+import api from "../api/api.jsx";
+import {registerValidation} from "../util/validations.jsx";
+import ShowError from "../util/ShowError.jsx";
 
-function Register(){
+function Register() {
     const response = useActionData()
     return (
         <nav className="w-full bg-(--bg-secondary)">
@@ -51,7 +54,7 @@ function Register(){
                         </div>
                         <input
                             id="email"
-                            type="email"
+                            type="text"
                             name="email"
                             placeholder="ایمیل خود را وارد کنید"
                             className="w-full h-12 px-2 bg-transparent outline-none"
@@ -100,6 +103,7 @@ function Register(){
                         />
                     </div>
                 </div>
+                <ShowError/>
                 <div className="w-full flex justify-between gap-3 text-sm">
                     <div className="flex items-center gap-2">
                         <input id="remember" type="checkbox"/>
@@ -117,9 +121,6 @@ function Register(){
                     ثبت نام
                 </button>
             </Form>
-            {
-                <p className="text-red-500" >{response?.message}</p>
-            }
         </nav>
 
     )
@@ -127,7 +128,7 @@ function Register(){
 
 export default Register;
 
-export async function action({ request }) {
+export async function action({request}) {
     const formData = await request.formData();
     const data = {
         username: formData.get("username"),
@@ -135,14 +136,20 @@ export async function action({ request }) {
         password: formData.get("password"),
         password_confirmation: formData.get("password_confirmation"),
     };
-    const response = await fetch("http://localhost:8000/api/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-        },
-        body: JSON.stringify(data),
-    });
-    if (!response.ok) return await response.json();
-    return redirect('/login')
+    const dataValidated = registerValidation(data)
+    if (!dataValidated) {
+        try {
+            await api.post("/register", data)
+            return redirect('/login')
+        } catch (error) {
+            return {
+                error: error.response?.data?.message
+            };
+        }
+    }else{
+        return {
+            error: dataValidated
+        };
+    }
+
 }

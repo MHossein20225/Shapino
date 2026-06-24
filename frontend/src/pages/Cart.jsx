@@ -1,5 +1,4 @@
 import {useDispatch, useSelector} from "react-redux";
-import {addToCart} from "../features/cart/cartSlice.jsx";
 
 function Cart(){
     const dispatch = useDispatch()

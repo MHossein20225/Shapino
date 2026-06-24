@@ -1,9 +1,13 @@
 import search from "../assets/icons/serach.svg";
 import lock from "../assets/icons/lock.svg";
-import {Form, Link, redirect, useActionData} from "react-router-dom";
+import {Form, Link, redirect} from "react-router-dom";
+import api from "../api/api.jsx";
+import {loginValidation} from "../util/validations.jsx";
+import ShowError from "../util/ShowError.jsx";
+import {setUser} from "../features/auth/authSlice.jsx";
+import {setToken} from "../util/token.jsx";
 
-function Login(){
-    const response = useActionData()
+function Login() {
     return (
         <nav className="w-full bg-(--bg-secondary)">
             <Form method="post" className="max-w-md mx-auto px-4 py-16 md:py-24 flex flex-col items-center gap-8">
@@ -57,15 +61,19 @@ function Login(){
                         />
                     </div>
                 </div>
+                <ShowError/>
                 <div className="w-full flex justify-between gap-3 text-sm">
                     <div className="flex items-center gap-2">
-                        <input id="remember" type="checkbox" />
+                        <input id="remember" type="checkbox"/>
                         <label htmlFor="remember">
                             مرا به خاطر بسپار
                         </label>
                     </div>
                     <Link to="" className="hover:underline">
                         رمز عبور را فراموش کردم؟
+                    </Link>
+                    <Link to="/register" className="hover:underline">
+                        اکانت ندارم
                     </Link>
                 </div>
                 <button
@@ -74,28 +82,35 @@ function Login(){
                     ورود
                 </button>
             </Form>
-            {response?.message}
+
         </nav>
     )
 }
 
 export default Login;
+
 export async function action({ request }) {
     const formData = await request.formData();
-    const data = {
+    const sendingData = {
         email: formData.get("email"),
-        password: formData.get("password")
+        password: formData.get("password"),
     };
-    const response = await fetch("http://localhost:8000/api/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-        },
-        body: JSON.stringify(data),
-    });
-    const result = await response.json()
-    if (!response.ok) return result;
-    localStorage.setItem('token', result.token)
-    return redirect('/')
+    const dataValidated = loginValidation(sendingData)
+    if(!dataValidated){
+        try {
+            const { data } = await api.post("/login", sendingData)
+            setToken(data.token)
+            setUser(data)
+            return redirect("/");
+        } catch (error) {
+            return {
+                error: error.response?.data?.message
+            };
+        }
+    }else{
+        return {
+            error: dataValidated
+        };
+    }
+
 }

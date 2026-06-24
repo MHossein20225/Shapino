@@ -3,45 +3,50 @@ import shield from "../assets/icons/shield.svg";
 import headphone from "../assets/icons/headphone.svg";
 import refresh from "../assets/icons/refresh.svg";
 import {useSelector} from "react-redux";
-import {Link} from "react-router-dom";
+import {Link, useLoaderData} from "react-router-dom";
+import api from "../api/api.jsx";
+import ProductGallery from "../components/component/ProductGallery.jsx";
+import ProductTabs from "../components/component/ProductTabs.jsx";
 
-function ProductDetails({name, description, image, price, off, rating}) {
-    const isAuth = useSelector(state => state.auth)
+function ProductDetails() {
+    const isAuthenticated = useSelector(state => state.auth)
+    const productDetail = useLoaderData()
+    console.log(isAuthenticated)
     return (
         <section className="w-full py-10">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="flex flex-col lg:flex-row gap-10">
 
 
-                    {/*<ProductGallery images={image}/>*/}
+                    <ProductGallery images={productDetail.image}/>
 
 
                     <div className="w-full lg:w-1/2 flex flex-col gap-6">
                         <div>
                             <h1 className="text-3xl font-bold">
-                                {name}
+                                {productDetail.title}
                             </h1>
                             <p className="text-gray-500 mt-2">
-                                دسته بندی / برند
+                                {productDetail.category.parent.name} / {productDetail.category.name}
                             </p>
                         </div>
-                        <div>
-                            <p className="text-yellow-500 text-xs sm:text-sm">
-                                ⭐ {rating}
-                            </p>
-                        </div>
+                        {/*<div>*/}
+                        {/*    <p className="text-yellow-500 text-xs sm:text-sm">*/}
+                        {/*        ⭐ {rating}*/}
+                        {/*    </p>*/}
+                        {/*</div>*/}
                         <div className="flex justify-between">
-                            {off &&
+                            {productDetail.off &&
                                 <p className="text-3xl font-bold line-through text-gray-400">
-                                    {price}
+                                    {productDetail.price}
                                 </p>}
-                            <p className={`text-3xl font-bold ${off && "text-red-500"}`}>
-                                {off ? price - (price * off / 100) : price} تومان
+                            <p className={`text-3xl font-bold ${productDetail.off && "text-red-500"}`}>
+                                {productDetail.off ? productDetail.price - (productDetail.price * productDetail.off / 100) : productDetail.price} تومان
                             </p>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3">
                             {
-                                isAuth
+                                isAuthenticated.user
                                     ?
                                     <button
                                         className="flex-1 bg-(--primary) text-white py-3 rounded-lg hover:opacity-90">
@@ -49,7 +54,7 @@ function ProductDetails({name, description, image, price, off, rating}) {
                                     </button>
                                     :
                                     <Link to="/login"
-                                          className="flex-1 bg-(--primary) text-gray-600 py-3 rounded-lg hover:opacity-90">
+                                          className="flex-1 bg-gray-300 text-gray-600 py-3 rounded-lg hover:opacity-90 text-center">
                                         به حساب خود وارد شوید
                                     </Link>
                             }
@@ -111,7 +116,7 @@ function ProductDetails({name, description, image, price, off, rating}) {
                     </div>
                 </div>
 
-                {/*<ProductTabs description={description}/>*/}
+                <ProductTabs description={productDetail.description}/>
 
             </div>
         </section>
@@ -119,3 +124,17 @@ function ProductDetails({name, description, image, price, off, rating}) {
 }
 
 export default ProductDetails
+export async function loader({ params }) {
+    try {
+        const { data } = await api("product/"+params.id)
+        return data
+    }catch (error){
+        throw new Response(
+            JSON.stringify({
+                message: "محصول پیدا نشد",
+            }),
+            { status: error.response?.status || 500 }
+        );
+    }
+
+}

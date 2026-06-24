@@ -1,16 +1,19 @@
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import heroSection from "../assets/images/heroSection.png"
-import {Link} from "react-router-dom";
+import {Link, useLoaderData} from "react-router-dom";
 import truck from '../assets/icons/truck.svg'
 import refresh from '../assets/icons/refresh.svg'
 import shield from '../assets/icons/shield.svg'
 import headphone from '../assets/icons/headphone.svg'
 import Category from "../components/component/Category.jsx";
 import ProductCard from "../components/component/ProductCard.jsx";
+import api from "../api/api.jsx";
+import ProductsSlider from "../components/component/ProductsSlider.jsx";
+
 
 function Home() {
-    const width = window.innerWidth;
+    const products = useLoaderData()
     return (
         <>
             <section className="w-full mt-4">
@@ -99,11 +102,7 @@ function Home() {
                         </Link>
                     </div>
 
-                    <div className="w-full">
-                        <Swiper slidesPerView={width <= 720 ? 3 : 5} spaceBetween={20}>
-                            <SwiperSlide><ProductCard /></SwiperSlide>
-                        </Swiper>
-                    </div>
+                    <ProductsSlider categories="mobile"/>
                 </div>
             </section>
             <section className="w-full mt-6">
@@ -114,11 +113,7 @@ function Home() {
                             مشاهده همه
                         </Link>
                     </div>
-                    <div className="w-full">
-                        <Swiper slidesPerView={width <= 720 ? 3 : 5} spaceBetween={20}>
-                            <SwiperSlide>{/*where we get product*/}</SwiperSlide>
-                        </Swiper>
-                    </div>
+                    {/*product slider*/}
                 </div>
             </section>
         </>
@@ -126,3 +121,4 @@ function Home() {
 }
 
 export default Home
+

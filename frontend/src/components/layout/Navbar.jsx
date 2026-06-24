@@ -7,11 +7,11 @@ import cart from '../../assets/icons/cart.svg'
 import user from '../../assets/icons/user.svg'
 import menu from '../../assets/icons/menu.svg'
 import lArrow from '../../assets/icons/leftArrow.svg'
+import SearchBar from "../component/SearchBar.jsx";
 
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const isAuth = useLoaderData()
-
     return (
         <>
             <nav className="w-full bg-(--bg-secondary)">
@@ -47,12 +47,7 @@ function Navbar() {
                                     alt="search"
                                 />
                             </div>
-
-                            <input
-                                type="text"
-                                placeholder="جستجو برای محصولات..."
-                                className="w-72 xl:w-96 h-full outline-none bg-transparent px-2"
-                            />
+                            <SearchBar/>
                         </div>
                         <div className="flex items-center gap-3 md:gap-5">
                             <Link

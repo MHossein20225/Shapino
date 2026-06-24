@@ -1,7 +1,11 @@
+import api from "../api/api.jsx";
+import {useLoaderData} from "react-router-dom";
+import {SwiperSlide} from "swiper/react";
 import ProductCard from "../components/component/ProductCard.jsx";
+import {logout} from "../features/auth/authSlice.jsx";
 
 function Products() {
-
+    const products = useLoaderData()
     return(
         <section className="mt-4">
             <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row">
@@ -31,7 +35,11 @@ function Products() {
                             </div>
                         </div>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
-                            {/*where we put product*/}
+                            {
+                                products && products.map(items =>
+                                    <ProductCard id={items.id} name={items.title} price={items.price} off={items.off} image={items.image}/>
+                                )
+                            }
                         </div>
                     </div>
                 </main>
@@ -46,3 +54,9 @@ function Products() {
     )
 }
 export default Products
+export async function loader({request}){
+    const query = new URL(request.url).searchParams
+    const q = query.get('q')
+    const {data} = await api(`/products?q=${q}`);
+    return data
+}

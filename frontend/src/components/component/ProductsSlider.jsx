@@ -12,7 +12,7 @@ export default function ProductsSlider({categories}){
             setProducts(products)
         }
         fetchingProducts()
-    })
+    }, [categories])
 
     return(
         <div className="w-full">

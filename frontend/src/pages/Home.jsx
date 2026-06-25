@@ -1,19 +1,17 @@
 import "swiper/css";
-import { Swiper, SwiperSlide } from "swiper/react";
 import heroSection from "../assets/images/heroSection.png"
 import {Link, useLoaderData} from "react-router-dom";
 import truck from '../assets/icons/truck.svg'
 import refresh from '../assets/icons/refresh.svg'
 import shield from '../assets/icons/shield.svg'
 import headphone from '../assets/icons/headphone.svg'
-import Category from "../components/component/Category.jsx";
-import ProductCard from "../components/component/ProductCard.jsx";
 import api from "../api/api.jsx";
 import ProductsSlider from "../components/component/ProductsSlider.jsx";
+import CategoryCard from "../components/component/CategoryCard.jsx";
+import CategoriesSection from "../components/component/CategoriesSection.jsx";
 
 
 function Home() {
-    const products = useLoaderData()
     return (
         <>
             <section className="w-full mt-4">
@@ -80,31 +78,14 @@ function Home() {
                     </div>
                 </div>
             </section>
-            <section className="w-full mt-6">
-                <div className="flex flex-col gap-9 max-w-7xl mx-auto px-4 bg-(--bg-secondary) w-full rounded-(--radius-md) py-6">
-                    <div className="flex justify-between items-center">
-                        <p className="text-xl font-bold">دسته بندی ها</p>
-                        <Link to="" className="text-blue-500 hover:underline">
-                            مشاهده همه
-                        </Link>
-                    </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                        {/*where we get category*/}
-                    </div>
-                </div>
-            </section>
-            <section className="w-full mt-6">
-                <div className="flex flex-col gap-9 max-w-7xl mx-auto px-4 bg-(--bg-secondary) w-full rounded-(--radius-md) py-6">
-                    <div className="flex justify-between items-center">
-                        <p className="text-xl font-bold">لپ تاپ</p>
-                        <Link to="" className="text-blue-500 hover:underline">
-                            مشاهده همه
-                        </Link>
-                    </div>
 
-                    <ProductsSlider categories="mobile"/>
-                </div>
-            </section>
+            <CategoriesSection/>
+
+
+            <ProductsSlider title="موبایل" categories="mobile"/>
+
+
+
             <section className="w-full mt-6">
                 <div className="flex flex-col gap-9 max-w-7xl mx-auto px-4 bg-(--bg-secondary) w-full rounded-(--radius-md) py-6">
                     <div className="flex justify-between items-center">

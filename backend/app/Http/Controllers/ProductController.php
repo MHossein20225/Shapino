@@ -38,4 +38,17 @@ class ProductController extends Controller
         $product->image = asset($product->image);
         return $product;
     }
+
+
+    public function searchedProduct(Request $request)
+    {
+        $q = $request->input('q');
+        return Product::where('title', 'like', "%{$q}%")
+            ->get()
+            ->map(function ($product) {
+                $product->image = asset($product->image);
+
+                return $product;
+            });
+    }
 }

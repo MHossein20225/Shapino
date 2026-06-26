@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function productsBtCategory($category)
+    public function getProductsBtCategory($category)
     {
         $category = Category::with('children')
             ->where('slug', $category)
@@ -32,7 +32,7 @@ class ProductController extends Controller
 
 
 
-    public function productDetail($id)
+    public function getProductDetail($id)
     {
         $product = Product::with('category.parent')->findOrFail($id);
         $product->image = asset($product->image);
@@ -40,7 +40,7 @@ class ProductController extends Controller
     }
 
 
-    public function searchedProduct(Request $request)
+    public function getProductBySearch(Request $request)
     {
         $q = $request->input('q');
         return Product::where('title', 'like', "%{$q}%")

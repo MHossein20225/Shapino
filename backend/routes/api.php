@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\ProductController;
 use \App\Http\Controllers\CategoryController;
+use \App\Http\Controllers\CartController;
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
@@ -13,9 +14,13 @@ Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
 });
 
 
-Route::get('/products', [ProductController::class, 'searchedProduct']);
-Route::get('/products/{category}', [ProductController::class, 'productsBtCategory']);
-Route::get('/product/{id}', [ProductController::class, 'productDetail']);
+Route::get('/products', [ProductController::class, 'getProductBySearch']);
+Route::get('/products/{category}', [ProductController::class, 'getProductsBtCategory']);
+Route::get('/product/{id}', [ProductController::class, 'getProductDetail']);
 
 
 Route::get('/categories', [CategoryController::class, 'getAllCategory']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cart', [CartController::class, 'getCartByUserId']);
+});

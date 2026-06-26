@@ -1,6 +1,6 @@
 import {Swiper, SwiperSlide} from "swiper/react";
 import ProductCard from "./ProductCard.jsx";
-import {getProductByCategory} from "../../util/getProductByCategory.jsx";
+import {getProductByCategory} from "../../util/requestFunctions.jsx";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 

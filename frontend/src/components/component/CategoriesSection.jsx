@@ -1,4 +1,4 @@
-import {getAllCategories} from "../../util/getAllCategories.jsx";
+import {getAllCategories} from "../../util/requestFunctions.jsx";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import CategoryCard from "./CategoryCard.jsx";
@@ -8,7 +8,6 @@ export default function CategoriesSection() {
     useEffect(() => {
         async function fetchingCategories(){
             const allCategory = await getAllCategories()
-            console.log(allCategory)
             setCategories(allCategory)
         }
         fetchingCategories()

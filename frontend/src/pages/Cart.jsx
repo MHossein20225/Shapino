@@ -1,10 +1,24 @@
 import {useDispatch, useSelector} from "react-redux";
+import CartItem from "../components/component/CartItem.jsx";
+import ErrorPage from "./ErrorPage.jsx";
+import {useQuery} from "@tanstack/react-query";
+import {getCart} from "../util/requestFunctions.jsx";
 
 function Cart(){
-    const dispatch = useDispatch()
-    const stateCart = useSelector(state => state.cart)
-    console.log(stateCart)
+    const isAuth = useSelector(state => state.auth.isAuthenticated)
+
+    if (!isAuth)
+        return <ErrorPage title="ورود امکان پذیر نیست"/>;
+
+
+    const {data, isLoading} = useQuery({
+        queryKey:['cart'],
+        queryFn:getCart,
+    })
+
+
     return (
+
         <>
             <header className="w-full">
                 <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col gap-6">
@@ -28,53 +42,11 @@ function Cart(){
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr className="border-t hover:bg-gray-50 transition-colors">
-                                        <td className="p-4 text-center">
-                                            <button className="text-red-500 hover:text-red-700 text-2xl">
-                                                ×
-                                            </button>
-                                        </td>
-                                        <td className="p-4">
-                                            <div className="flex items-center gap-4">
-                                                <img
-                                                    src="https://play-lh.googleusercontent.com/cpWmdyzME_WxTe5CPluEmyym_zzAWrWvCEIdlZjXu9PGNO6mUPfkEgj6qsKwoedmaA"
-                                                    alt=""
-                                                    className="w-16 h-16 md:w-20 md:h-20 rounded-lg border object-cover"
-                                                />
-                                                <div>
-                                                    <p className="font-semibold">
-                                                        نام محصول
-                                                    </p>
-
-                                                    <p className="text-sm text-gray-500">
-                                                        توضیحات کوتاه
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="p-4 text-center whitespace-nowrap">
-                                            250,000 تومان
-                                        </td>
-                                        <td className="p-4">
-                                            <div className="flex justify-center items-center">
-                                                <button className="w-9 h-9 border border-gray-300 hover:bg-gray-100">
-                                                    +
-                                                </button>
-                                                <input
-                                                    type="text"
-                                                    value="1"
-                                                    readOnly
-                                                    className="w-12 h-9 border-y border-gray-300 text-center outline-none"
-                                                />
-                                                <button className="w-9 h-9 border border-gray-300 hover:bg-gray-100">
-                                                    -
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td className="p-4 text-center font-bold text-green-600 whitespace-nowrap">
-                                            250,000 تومان
-                                        </td>
-                                    </tr>
+                                    {
+                                        data?.map(items => (
+                                            <CartItem image={items.product.image} name={items.product.title} description={items.product.description} price={items.product.price}/>
+                                        ))
+                                    }
                                     </tbody>
                                 </table>
                             </div>

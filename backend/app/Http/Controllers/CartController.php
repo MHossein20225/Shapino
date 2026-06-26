@@ -11,6 +11,10 @@ class CartController extends Controller
     {
         return Cart::with('product')
             ->where('user_id', $request->user()->id)
-            ->get();
+            ->get()
+            ->map(function ($product){
+               $product->product->image = asset($product->product->image);
+               return $product;
+            });
     }
 }

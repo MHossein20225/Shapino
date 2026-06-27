@@ -17,4 +17,13 @@ class CartController extends Controller
                return $product;
             });
     }
+
+    public function updateCartQuantity(Request $request, $id)
+    {
+        $cart = Cart::findOrFail($id);
+        $cart->update([
+            'quantity' => $request->quantity,
+        ]);
+        return response()->json($cart);
+    }
 }

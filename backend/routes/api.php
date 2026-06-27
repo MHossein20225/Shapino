@@ -23,4 +23,5 @@ Route::get('/categories', [CategoryController::class, 'getAllCategory']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cart', [CartController::class, 'getCartByUserId']);
+    Route::patch('/cart/{id}', [CartController::class, 'updateCartQuantity']);
 });

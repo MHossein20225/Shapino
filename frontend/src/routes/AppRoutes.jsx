@@ -8,10 +8,11 @@ import Register, {action as registerAction} from "../pages/Register.jsx";
 import Cart from "../pages/Cart.jsx";
 import ProductDetails, {loader as productDetailLoader} from "../pages/ProductDetails.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
+import Loading from "../components/component/Loading.jsx";
 
 const routes = createBrowserRouter([
     {
-        path: '/', element: <MainLayout/>, loader: mainLayoutLoader, HydrateFallback: () => <div>Loading...</div>, children: [
+        path: '/', element: <MainLayout/>, loader: mainLayoutLoader, HydrateFallback: Loading, children: [
             {index: true, element: <Home/>},
             {path: "/products", element: <Products />, loader: productsLoader},
             {path: 'product/:id', element: <ProductDetails/>, loader: productDetailLoader, errorElement: <ErrorPage/>},

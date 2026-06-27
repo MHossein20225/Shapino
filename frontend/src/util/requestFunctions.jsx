@@ -12,3 +12,9 @@ export async function getCart(){
     const {data} = await api("/cart")
     return data
 }
+export async function updateCart(id, quantity) {
+    const { data } = await api.patch(`/cart/${id}`, {
+        quantity,
+    });
+    return data;
+}

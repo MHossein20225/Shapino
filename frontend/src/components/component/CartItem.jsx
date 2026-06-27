@@ -1,5 +1,18 @@
-export default function CartItem({image, name, description, price}) {
-    return(
+import {useMutation} from "@tanstack/react-query";
+import {updateCart} from "../../util/requestFunctions.jsx";
+import {queryClient} from "../../main.jsx";
+
+export default function CartItem({id, image, name, description, price, quantity}) {
+
+    const mutation = useMutation({
+        mutationFn: ({id, quantity}) => updateCart(id, quantity),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["cart"]
+            })
+        }
+    })
+    return (
         <tr className="border-t hover:bg-gray-50 transition-colors">
             <td className="p-4 text-center">
                 <button className="text-red-500 hover:text-red-700 text-2xl">
@@ -29,16 +42,31 @@ export default function CartItem({image, name, description, price}) {
             </td>
             <td className="p-4">
                 <div className="flex justify-center items-center">
-                    <button className="w-9 h-9 border border-gray-300 hover:bg-gray-100">
+                    <button onClick={() => {
+                            mutation.mutate({
+                                id,
+                                quantity: quantity + 1
+                            })
+                    }}
+                            className="w-9 h-9 border border-gray-300 hover:bg-gray-100">
                         +
                     </button>
                     <input
                         type="text"
-                        value="1"
+                        value={quantity}
                         readOnly
                         className="w-12 h-9 border-y border-gray-300 text-center outline-none"
                     />
-                    <button className="w-9 h-9 border border-gray-300 hover:bg-gray-100">
+                    <button
+                        onClick={() => {
+                            if (quantity > 1) {
+                                mutation.mutate({
+                                    id,
+                                    quantity: quantity - 1
+                                })
+                            }
+                        }}
+                        className="w-9 h-9 border border-gray-300 hover:bg-gray-100">
                         -
                     </button>
                 </div>

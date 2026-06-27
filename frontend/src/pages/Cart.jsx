@@ -3,6 +3,7 @@ import CartItem from "../components/component/CartItem.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 import {useQuery} from "@tanstack/react-query";
 import {getCart} from "../util/requestFunctions.jsx";
+import {formatPrice} from "../util/functions.jsx";
 
 function Cart(){
     const isAuth = useSelector(state => state.auth.isAuthenticated)
@@ -11,7 +12,7 @@ function Cart(){
         return <ErrorPage title="ورود امکان پذیر نیست"/>;
 
 
-    const {data, isLoading} = useQuery({
+    const {data} = useQuery({
         queryKey:['cart'],
         queryFn:getCart,
     })
@@ -44,7 +45,14 @@ function Cart(){
                                     <tbody>
                                     {
                                         data?.map(items => (
-                                            <CartItem image={items.product.image} name={items.product.title} description={items.product.description} price={items.product.price}/>
+                                            <CartItem
+                                                id={items.product.id}
+                                                image={items.product.image}
+                                                name={items.product.title}
+                                                description={items.product.description}
+                                                price={formatPrice(items.product.price)}
+                                                quantity={items.quantity}
+                                            />
                                         ))
                                     }
                                     </tbody>

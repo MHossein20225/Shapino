@@ -4,6 +4,7 @@ import ErrorPage from "./ErrorPage.jsx";
 import {useQuery} from "@tanstack/react-query";
 import {getCart} from "../util/requestFunctions.jsx";
 import {formatPrice} from "../util/functions.jsx";
+import {Link} from "react-router-dom";
 
 function Cart(){
     const isAuth = useSelector(state => state.auth.isAuthenticated)

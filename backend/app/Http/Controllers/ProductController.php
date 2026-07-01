@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function getProductsBtCategory($category)
+    public function getProductsByCategory($category)
     {
         $category = Category::with('children')
             ->where('slug', $category)

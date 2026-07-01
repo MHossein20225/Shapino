@@ -27,6 +27,6 @@ export async function isInCart(productId) {
     return data;
 }
 export async function deleteCartItems(productId) {
-    const { data } = await api.delete(`/cart/delete/${productId}`);
-    return data;
+    const answer = confirm("مطمعنی میخوای پاک کنی")
+    answer && await api.delete(`/cart/delete/${productId}`)
 }

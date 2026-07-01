@@ -15,7 +15,7 @@ Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
 
 
 Route::get('/products', [ProductController::class, 'getProductBySearch']);
-Route::get('/products/{category}', [ProductController::class, 'getProductsBtCategory']);
+Route::get('/products/{category}', [ProductController::class, 'getProductsByCategory']);
 Route::get('/product/{id}', [ProductController::class, 'getProductDetail']);
 
 
@@ -25,5 +25,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cart', [CartController::class, 'getCartByUserId']);
     Route::patch('/cart/{id}', [CartController::class, 'updateCartQuantity']);
     Route::post('/cart/add', [CartController::class, 'addProductToCart']);
-    Route::post('/cart/delete/{id}', [CartController::class, 'deleteProductInCart']);
+    Route::delete('/cart/delete/{id}', [CartController::class, 'deleteProductInCart']);
 });

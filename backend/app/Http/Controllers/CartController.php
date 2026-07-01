@@ -11,23 +11,25 @@ class CartController extends Controller
         "user_id",
         "product_id",
     ];
+
     public function getCartByUserId(Request $request)
     {
         return Cart::with('product')
             ->where('user_id', $request->user()->id)
             ->get()
-            ->map(function ($product){
-               $product->product->image = asset($product->product->image);
-               return $product;
+            ->map(function ($product) {
+                $product->product->image = asset($product->product->image);
+                return $product;
             });
     }
 
     public function updateCartQuantity(Request $request, $id)
     {
-        $cart = Cart::findOrFail($id);
-        $cart->update([
-            'quantity' => $request->quantity,
-        ]);
+        $cart = Cart::where('product_id', $id)
+            ->first()
+            ->update([
+                'quantity' => $request->quantity,
+            ]);
         return response()->json($cart);
     }
 
@@ -40,7 +42,8 @@ class CartController extends Controller
         ]);
         return response()->json($cart);
     }
-public function deleteProductInCart(Request $request, $id)
+
+    public function deleteProductInCart(Request $request, $id)
     {
         $cart = Cart::where("user_id", $request->user()->id)
             ->where("product_id", $id)

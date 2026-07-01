@@ -1,11 +1,11 @@
 import {useMutation} from "@tanstack/react-query";
-import {updateCart} from "../../util/requestFunctions.jsx";
+import {updateProductQuantity} from "../../util/requestFunctions.jsx";
 import {queryClient} from "../../main.jsx";
 
 export default function CartItem({id, image, name, description, price, quantity}) {
 
     const mutation = useMutation({
-        mutationFn: ({id, quantity}) => updateCart(id, quantity),
+        mutationFn: ({id, quantity}) => updateProductQuantity(id, quantity),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["cart"]
@@ -42,6 +42,10 @@ export default function CartItem({id, image, name, description, price, quantity}
             </td>
             <td className="p-4">
                 <div className="flex justify-center items-center">
+
+                    {mutation.isPending &&
+                        <div className="w-5 h-5 border-4 border-gray-300 border-t-(--primary) rounded-full animate-spin"></div>
+                    }
                     <button onClick={() => {
                             mutation.mutate({
                                 id,
@@ -69,6 +73,8 @@ export default function CartItem({id, image, name, description, price, quantity}
                         className="w-9 h-9 border border-gray-300 hover:bg-gray-100">
                         -
                     </button>
+
+
                 </div>
             </td>
             <td className="p-4 text-center font-bold text-green-600 whitespace-nowrap">

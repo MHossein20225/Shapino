@@ -7,11 +7,30 @@ import {Link, useLoaderData} from "react-router-dom";
 import api from "../api/api.jsx";
 import ProductGallery from "../components/component/ProductGallery.jsx";
 import ProductTabs from "../components/component/ProductTabs.jsx";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {addProductToCart, getCart, isInCart} from "../util/requestFunctions.jsx";
+import {queryClient} from "../main.jsx";
+import login from "./Login.jsx";
 
 function ProductDetails() {
     const isAuthenticated = useSelector(state => state.auth)
     const productDetail = useLoaderData()
-    console.log(isAuthenticated)
+
+
+    const mutation = useMutation({
+        mutationFn: (id) => addProductToCart(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["cart"],
+            });
+        }
+    })
+
+
+
+
+
+
     return (
         <section className="w-full py-10">
             <div className="max-w-7xl mx-auto px-4">
@@ -45,19 +64,33 @@ function ProductDetails() {
                             </p>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3">
+
                             {
-                                isAuthenticated.user
-                                    ?
-                                    <button
-                                        className="flex-1 bg-(--primary) text-white py-3 rounded-lg hover:opacity-90">
-                                        افزودن به سبد خرید
-                                    </button>
-                                    :
-                                    <Link to="/login"
-                                          className="flex-1 bg-gray-300 text-gray-600 py-3 rounded-lg hover:opacity-90 text-center">
+                                isAuthenticated ? (
+                                    productDetail.isInCart ? (
+                                        <button
+                                            className="flex-1 bg-green-600 text-white py-3 rounded-lg"
+                                        >
+                                            در سبد خرید وجود دارد
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => mutation.mutate({ id: productDetail.id })}
+                                            className="flex-1 bg-(--primary) text-white py-3 rounded-lg hover:opacity-90"
+                                        >
+                                            افزودن به سبد خرید
+                                        </button>
+                                    )
+                                ) : (
+                                    <Link
+                                        to="/login"
+                                        className="flex-1 bg-gray-300 text-gray-600 py-3 rounded-lg hover:opacity-90 text-center"
+                                    >
                                         به حساب خود وارد شوید
                                     </Link>
+                                )
                             }
+
                             <button className="px-6 py-3 border rounded-lg hover:bg-gray-100">
                                 علاقه‌مندی‌ها
                             </button>

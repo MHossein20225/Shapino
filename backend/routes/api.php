@@ -24,4 +24,6 @@ Route::get('/categories', [CategoryController::class, 'getAllCategory']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cart', [CartController::class, 'getCartByUserId']);
     Route::patch('/cart/{id}', [CartController::class, 'updateCartQuantity']);
+    Route::post('/cart/add', [CartController::class, 'addProductToCart']);
+    Route::post('/cart/delete/{id}', [CartController::class, 'deleteProductInCart']);
 });

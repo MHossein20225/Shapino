@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    protected $fillable = [
+        "user_id",
+        "product_id",
+    ];
     public function getCartByUserId(Request $request)
     {
         return Cart::with('product')
@@ -26,4 +30,21 @@ class CartController extends Controller
         ]);
         return response()->json($cart);
     }
+
+
+    public function addProductToCart(Request $request)
+    {
+        $cart = Cart::create([
+            "user_id" => $request->user()->id,
+            "product_id" => $request->id
+        ]);
+        return response()->json($cart);
+    }
+public function deleteProductInCart(Request $request, $id)
+    {
+        $cart = Cart::where("user_id", $request->user()->id)
+            ->where("product_id", $id)
+            ->delete();
+    }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductResource;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -32,10 +33,17 @@ class ProductController extends Controller
 
 
 
-    public function getProductDetail($id)
+    public function getProductDetail(Request $request, $id)
     {
         $product = Product::with('category.parent')->findOrFail($id);
         $product->image = asset($product->image);
+
+        $product->isInCart = $request->user()
+            ? Cart::where('user_id', $request->user()->id)
+                ->where('product_id', $product->id)
+                ->exists()
+            : false;
+
         return $product;
     }
 

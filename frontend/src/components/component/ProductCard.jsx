@@ -1,6 +1,8 @@
 import {Link} from "react-router-dom";
+import {formatPrice} from "../../util/functions.jsx";
 
 function ProductCard({id, image, name, price, off = null, rating}) {
+    const formatedPrice = formatPrice(price)
     return(
         <Link to={`product/${id}`} className="relative flex flex-col bg-(--bg-secondary) rounded-(--radius-sm) overflow-hidden shadow-sm hover:shadow-md transition w-full">
             {off &&
@@ -27,10 +29,10 @@ function ProductCard({id, image, name, price, off = null, rating}) {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1 sm:gap-2">
                         <p className={`text-[10px] sm:text-xs ${off && "line-through text-gray-400"}`}>
-                            {price}
+                            {formatedPrice}
                         </p>
                         {off && <p className="text-sm sm:text-base text-red-500 font-bold">
-                            {price - (price * off / 100)}
+                            {formatedPrice - (formatedPrice * off / 100)}
                         </p>}
                     </div>
                     <p className="text-[10px] sm:text-xs text-gray-500">تومان</p>

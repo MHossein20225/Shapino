@@ -1,4 +1,4 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import CartItem from "../components/component/CartItem.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 import {useQuery} from "@tanstack/react-query";
@@ -18,7 +18,10 @@ function Cart(){
         queryFn:getCart,
     })
 
-
+    const totalPrice = data?.reduce(
+        (sum, item) => sum + item.product.price * item.quantity,
+        0
+    );
 
     return (
         <>
@@ -68,7 +71,7 @@ function Cart(){
                                 <div className="space-y-3">
                                     <div className="flex justify-between">
                                         <span>جمع کل محصولات:</span>
-                                        <span>250,000 تومان</span>
+                                        <span>{formatPrice(totalPrice)} تومان</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>هزینه ارسال</span>
@@ -76,7 +79,7 @@ function Cart(){
                                     </div>
                                     <div className="flex justify-between font-bold">
                                         <span className="text-sm">مبلغ قابل پرداخت</span>
-                                        <span className="text-lg text-(--primary)">250,000 تومان</span>
+                                        <span className="text-lg text-(--primary)">{formatPrice(totalPrice)} تومان</span>
                                     </div>
                                 </div>
                                 <button className="w-full mt-6 py-3 rounded-(--radius-md) bg-(--primary-hover) text-white hover:opacity-90">

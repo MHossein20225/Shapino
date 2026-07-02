@@ -11,6 +11,7 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {addProductToCart, getCart, isInCart} from "../util/requestFunctions.jsx";
 import {queryClient} from "../main.jsx";
 import login from "./Login.jsx";
+import {formatPrice} from "../util/functions.jsx";
 
 function ProductDetails() {
     const isAuthenticated = useSelector(state => state.auth)
@@ -25,11 +26,8 @@ function ProductDetails() {
             });
         }
     })
-
-
-
-
-
+    const formatedPrice = formatPrice(productDetail.price)
+    const offedPrice = formatPrice(productDetail.price - (productDetail.price * productDetail.off / 100))
 
     return (
         <section className="w-full py-10">
@@ -57,10 +55,10 @@ function ProductDetails() {
                         <div className="flex justify-between">
                             {productDetail.off &&
                                 <p className="text-3xl font-bold line-through text-gray-400">
-                                    {productDetail.price}
+                                    {formatedPrice}
                                 </p>}
                             <p className={`text-3xl font-bold ${productDetail.off && "text-red-500"}`}>
-                                {productDetail.off ? productDetail.price - (productDetail.price * productDetail.off / 100) : productDetail.price} تومان
+                                {productDetail.off ? offedPrice : formatedPrice} تومان
                             </p>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3">

@@ -3,6 +3,8 @@ import {useLoaderData} from "react-router-dom";
 import {SwiperSlide} from "swiper/react";
 import ProductCard from "../components/component/ProductCard.jsx";
 import {logout} from "../features/auth/authSlice.jsx";
+import Filter from "../components/component/Filter.jsx";
+import {formatPrice} from "../util/functions.jsx";
 
 function Products() {
     const products = useLoaderData()
@@ -10,7 +12,6 @@ function Products() {
         <section className="mt-4">
             <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row">
 
-                {/* Products */}
                 <main className="flex-1 p-4 lg:p-8">
                     <header className="space-y-2">
                         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
@@ -43,12 +44,7 @@ function Products() {
                         </div>
                     </div>
                 </main>
-                {/* Sidebar */}
-                <aside className="lg:w-72 p-4 lg:p-8 border-t lg:border-t-0 lg:border-r">
-                    <h2 className="font-semibold">
-                        فیلتر محصولات
-                    </h2>
-                </aside>
+                <Filter/>
             </div>
         </section>
     )

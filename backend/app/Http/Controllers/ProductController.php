@@ -21,14 +21,12 @@ class ProductController extends Controller
             ->pluck('id')
             ->push($category->id);
 
-        $products = Product::whereIn('category_id', $ids)
-            ->get()
-            ->map(function ($product) {
+        return Product::whereIn('category_id', $ids)
+            ->paginate(20)
+            ->through(function ($product) {
                 $product->image = asset($product->image);
-
                 return $product;
             });
-        return $products;
     }
 
 
@@ -51,11 +49,11 @@ class ProductController extends Controller
     public function getProductBySearch(Request $request)
     {
         $q = $request->input('q');
-        return Product::where('title', 'like', "%{$q}%")
-            ->get()
-            ->map(function ($product) {
-                $product->image = asset($product->image);
 
+        return Product::where('title', 'like', "%{$q}%")
+            ->paginate(20)
+            ->through(function ($product) {
+                $product->image = asset($product->image);
                 return $product;
             });
     }

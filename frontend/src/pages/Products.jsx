@@ -5,54 +5,41 @@ import ProductCard from "../components/component/ProductCard.jsx";
 import {logout} from "../features/auth/authSlice.jsx";
 import Filter from "../components/component/Filter.jsx";
 import {formatPrice} from "../util/functions.jsx";
+import Pagination from "../components/component/Pagination.jsx";
 
 function Products() {
-    const products = useLoaderData()
-    return(
+    const { q, data } = useLoaderData();
+    const products = data.data;
+
+    return (
         <section className="mt-4">
             <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row">
-
                 <main className="flex-1 p-4 lg:p-8">
-                    <header className="space-y-2">
-                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-                            همه محصولات
-                        </h1>
-                        <p className="text-sm text-gray-500">
-                            خانه / فروشگاه
-                        </p>
-                    </header>
-                    <div className="mt-8 space-y-8">
-                        <div className="flex flex-col sm:flex-row justify-between gap-4">
-                            <p>نمایش 100 محصول</p>
-                            <div className="flex items-center gap-2">
-                                <span>مرتب سازی:</span>
-
-                                <select className="border rounded-md px-3 py-1">
-                                    <option>جدیدترین</option>
-                                    <option>ارزان‌ترین</option>
-                                    <option>محبوب‌ترین</option>
-                                    <option>پربازدیدترین</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
-                            {
-                                products && products.map(items =>
-                                    <ProductCard id={items.id} name={items.title} price={items.price} off={items.off} image={items.image}/>
-                                )
-                            }
-                        </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
+                        {products.map(item => (
+                            <ProductCard
+                                key={item.id}
+                                id={item.id}
+                                name={item.title}
+                                price={item.price}
+                                off={item.off}
+                                image={item.image}
+                            />
+                        ))}
                     </div>
                 </main>
-                <Filter/>
+                <Filter />
             </div>
+            <Pagination products={data} search={q} />
         </section>
-    )
+    );
 }
 export default Products
-export async function loader({request}){
-    const query = new URL(request.url).searchParams
-    const q = query.get('q')
-    const {data} = await api(`/products?q=${q}`);
-    return data
+export async function loader({ request }) {
+    const params = new URL(request.url).searchParams;
+    const q = params.get("q") ?? "";
+    const { data } = await api.get("/products", {
+        params: { q }
+    });
+    return { q, data };
 }

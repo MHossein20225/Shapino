@@ -9,8 +9,8 @@ export default function ProductsSlider({title, categories}){
     const [products, setProducts] = useState()
     useEffect(() => {
         async function fetchingProducts() {
-            const products = await getProductByCategory(categories)
-            setProducts(products)
+            const {data} = await getProductByCategory(categories)
+            setProducts(data)
         }
         fetchingProducts()
     }, [categories])

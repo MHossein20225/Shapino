@@ -36,11 +36,10 @@ class ProductController extends Controller
         $product = Product::with('category.parent')->findOrFail($id);
         $product->image = asset($product->image);
 
-        $product->isInCart = $request->user()
-            ? Cart::where('user_id', $request->user()->id)
+        $product->isInCart = $request->user() &&
+            Cart::where('user_id', $request->user()->id)
                 ->where('product_id', $product->id)
-                ->exists()
-            : false;
+                ->exists();
 
         return $product;
     }
@@ -48,7 +47,7 @@ class ProductController extends Controller
 
     public function getProductBySearch(Request $request)
     {
-        $q = $request->input('q');
+        $q = $request->q;
 
         return Product::where('title', 'like', "%{$q}%")
             ->paginate(20)

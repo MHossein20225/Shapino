@@ -4,7 +4,7 @@ import {formatPrice} from "../../util/functions.jsx";
 function ProductCard({id, image, name, price, off = null, rating}) {
     const formatedPrice = formatPrice(price)
     return(
-        <Link to={`product/${id}`} className="relative flex flex-col bg-(--bg-secondary) rounded-(--radius-sm) overflow-hidden shadow-sm hover:shadow-md transition w-full">
+        <Link to={`/product/${id}`} className="relative flex flex-col bg-(--bg-secondary) rounded-(--radius-sm) overflow-hidden shadow-sm hover:shadow-md transition w-full">
             {off &&
                 <div className="absolute top-2 right-2 bg-red-500 text-white text-[10px] sm:text-xs px-2 py-1 rounded-md z-10">
                     OFF {off}%

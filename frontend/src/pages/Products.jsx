@@ -1,15 +1,14 @@
-import api from "../api/api.jsx";
+
 import {useLoaderData} from "react-router-dom";
-import {SwiperSlide} from "swiper/react";
 import ProductCard from "../components/component/ProductCard.jsx";
-import {logout} from "../features/auth/authSlice.jsx";
 import Filter from "../components/component/Filter.jsx";
-import {formatPrice} from "../util/functions.jsx";
 import Pagination from "../components/component/Pagination.jsx";
+import {getProductBySearch} from "../util/requestFunctions.jsx";
 
 function Products() {
     const { q, data } = useLoaderData();
     const products = data.data;
+
 
     return (
         <section className="mt-4">
@@ -38,8 +37,6 @@ export default Products
 export async function loader({ request }) {
     const params = new URL(request.url).searchParams;
     const q = params.get("q") ?? "";
-    const { data } = await api.get("/products", {
-        params: { q }
-    });
+    const data = await getProductBySearch(q)
     return { q, data };
 }

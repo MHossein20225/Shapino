@@ -30,3 +30,9 @@ export async function deleteCartItems(productId) {
     const answer = confirm("مطمعنی میخوای پاک کنی")
     answer && await api.delete(`/cart/delete/${productId}`)
 }
+export async function getProductBySearch(q) {
+    const { data } = await api.get("/products", {
+        params: { q }
+    });
+    return data
+}

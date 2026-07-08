@@ -67,6 +67,9 @@ body {
     padding: 0;
     box-sizing: border-box;
     background: var(--bg);
-    font-family: "Vazirmatn", sans-serif;
     direction: rtl;
+}
+@font-face {
+    font-family: "Vazirmatn Bold";
+    src: url("./assets/font/Vazirmatn-Bold.woff2") format("woff2");
 }

@@ -36,3 +36,14 @@ export async function getProductBySearch(q) {
     });
     return data
 }
+export async function getComment(id) {
+    const {data} = await api.get(`/product/${id}/comments`)
+    return data
+}
+export async function addComment(productId, body, parent_id = null) {
+    const { data } = await api.post(`/product/${productId}/add/comment`, {
+        body,
+        parent_id,
+    });
+    return data;
+}

@@ -1,7 +1,20 @@
-import { useState } from "react";
+import {useState} from "react";
+import {useParams} from "react-router-dom";
+import {useQuery} from "@tanstack/react-query";
+import {getComment} from "../../util/requestFunctions.jsx";
+import CommentForm from "./CommentForm.jsx";
+import CommentCard from "./CommentCard.jsx";
 
 export default function ProductTabs({comments = null, description}) {
     const [activeTab, setActiveTab] = useState("description");
+    const {id} = useParams();
+
+    const {data} = useQuery({
+        queryKey: ["comments", id],
+        queryFn: () => getComment(id),
+        enabled: activeTab === "comments",
+    });
+    console.log(data)
 
     return (
         <div className="mt-16 rounded-xl">
@@ -52,38 +65,15 @@ export default function ProductTabs({comments = null, description}) {
                             نظرات کاربران
                         </h2>
 
-                        <div className="space-y-4">
 
-                            {/* Comment 1 */}
-                            <div className="border rounded-lg p-4">
-                                <div className="flex justify-between">
-                                    <span className="font-medium">
-                                        کاربر 1
-                                    </span>
-                                    <span className="text-sm text-gray-500">
-                                        2 روز پیش
-                                    </span>
-                                </div>
-                                <p className="text-gray-600 mt-2">
-                                    محصول خیلی خوب بود 👍
-                                </p>
-                            </div>
+                        <CommentForm productId={id}/>
 
-                            {/* Comment 2 */}
-                            <div className="border rounded-lg p-4">
-                                <div className="flex justify-between">
-                                    <span className="font-medium">
-                                        کاربر 2
-                                    </span>
-                                    <span className="text-sm text-gray-500">
-                                        1 هفته پیش
-                                    </span>
-                                </div>
-                                <p className="text-gray-600 mt-2">
-                                    کیفیتش نسبت به قیمت عالیه
-                                </p>
-                            </div>
-
+                        <div className="space-y-4 mt-3">
+                            {
+                                data && data.map((comment) => (
+                                    <CommentCard userName={comment.user.username} comment={comment.body} addedTime={comment.created_at} />
+                                ))
+                            }
                         </div>
                     </div>
                 )}

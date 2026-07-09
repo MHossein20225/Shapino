@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\UserController;
@@ -26,4 +27,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/cart/{id}', [CartController::class, 'updateCartQuantity']);
     Route::post('/cart/add', [CartController::class, 'addProductToCart']);
     Route::delete('/cart/delete/{id}', [CartController::class, 'deleteProductInCart']);
+});
+
+Route::get('/product/{product}/comments', [CommentController::class, 'getComment']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/product/{product}/add/comment', [CommentController::class, 'addComment']);
 });

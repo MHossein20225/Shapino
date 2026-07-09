@@ -20,3 +20,9 @@ export function registerValidation(data) {
 
     return false;
 }
+export function commentValidation(data){
+    if (!data.comment)
+        return "یه نظر بزار"
+    else
+        return true
+}

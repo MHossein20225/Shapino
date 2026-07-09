@@ -23,10 +23,6 @@ export default function CartItem({id, image, name, description, price, quantity}
     })
     return (
         <>
-            {deleteItemMutation.isPending
-                ?
-                <div className="w-full h-12 text-center border-4 text-red-600">در حال پاک کردن ...</div>
-                :
                 <tr className="border-t hover:bg-gray-50 transition-colors">
                     <td className="p-4 text-center">
                         <button
@@ -92,7 +88,6 @@ export default function CartItem({id, image, name, description, price, quantity}
                         {price} تومان
                     </td>
                 </tr>
-            }
         </>
     )
 }

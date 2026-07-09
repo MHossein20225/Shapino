@@ -11,11 +11,18 @@ class Product extends Model
         'description',
         'price',
         'image',
-        'category_id'
+        'category_id',
+        'user_id',
+        'body',
+        'parent_id'
     ];
 
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->whereNull('parent_id')->with('user', 'replies')->latest();
     }
 }

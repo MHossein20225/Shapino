@@ -14,7 +14,6 @@ export default function ProductTabs({comments = null, description}) {
         queryFn: () => getComment(id),
         enabled: activeTab === "comments",
     });
-    console.log(data)
 
     return (
         <div className="mt-16 rounded-xl">
@@ -71,7 +70,7 @@ export default function ProductTabs({comments = null, description}) {
                         <div className="space-y-4 mt-3">
                             {
                                 data && data.map((comment) => (
-                                    <CommentCard userName={comment.user.username} comment={comment.body} addedTime={comment.created_at} />
+                                    <CommentCard id={comment.id} userName={comment.user.username} comment={comment.body} addedTime={comment.created_at}/>
                                 ))
                             }
                         </div>

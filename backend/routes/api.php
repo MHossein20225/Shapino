@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/product/{product}/comments', [CommentController::class, 'getComment']);
+Route::get('/comment/{comment}/replies', [CommentController::class, 'getReplies']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/product/{product}/add/comment', [CommentController::class, 'addComment']);

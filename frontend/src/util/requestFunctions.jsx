@@ -47,3 +47,7 @@ export async function addComment(productId, body, parent_id = null) {
     });
     return data;
 }
+export async function getReplies(id) {
+    const {data} = await api.get(`/comment/${id}/replies`)
+    return data
+}
